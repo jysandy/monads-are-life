@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib
+  exposed-modules:     Lib, Monad, DB
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , servant-server
@@ -36,16 +36,18 @@ executable monads-are-life-exe
 test-suite monads-are-life-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   main-is:             Spec.hs
+  other-modules:       MonadTest
   build-depends:       base
                      , monads-are-life
-                     , hspec
-                     , hspec-wai
-                     , hspec-wai-json
+                     , tasty
+                     , tasty-hunit
                      , aeson
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+                     , postgresql-simple
+                     , containers
   default-language:    Haskell2010
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/monads-are-life
+  location: https://github.com/jysandy/monads-are-life
