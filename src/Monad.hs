@@ -1,4 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Monad
   ( fetchAll
@@ -16,12 +18,16 @@ import qualified DB
 import qualified Database.PostgreSQL.Simple    as PSQL
 import qualified Data.Text                     as Text
 import           Data.Text                      ( Text )
+import           GHC.Generics
+import           Data.Aeson
 
 data Monad = Monad {id :: Integer,
                     name :: Text,
                     description :: Text,
                     rating :: Int}
-                    deriving (Eq, Show, Ord)
+                    deriving (Eq, Show, Ord, Generic)
+
+instance ToJSON Monad
 
 fetchAll :: IO [Monad]
 fetchAll = do
