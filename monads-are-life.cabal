@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib, Monad, DB, Config
+  exposed-modules:     Monad, DB, Config, Server, Handlers
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , servant-server

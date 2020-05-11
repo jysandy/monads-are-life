@@ -1,6 +1,10 @@
 module Main where
 
-import Lib
+import Server
+import qualified Config
 
 main :: IO ()
-main = startApp
+main = do
+  config <- Config.read
+  putStrLn "Starting server"
+  Server.startServer config
