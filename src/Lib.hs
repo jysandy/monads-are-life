@@ -17,6 +17,9 @@ import           Control.Monad.Trans
 import           GHC.Generics
 import           Data.Text
 import           Control.Monad.Except
+import Control.Monad.Reader
+import qualified Config
+import GHC.Natural(naturalToInt)
 
 type API =   "ping" :> Get '[JSON] String
       :<|> "monads" :> Get '[JSON] [Monad.Monad]
@@ -24,27 +27,29 @@ type API =   "ping" :> Get '[JSON] String
       :<|> "monads" :> Capture "monadID" Integer :> Get '[JSON] Monad.Monad
       :<|> "monads" :> Capture "monadID" Integer :> Delete '[JSON] Monad.Monad
 
-server :: Server API
+type MyHandler = ReaderT Config.Config Handler
+
+server :: ServerT API MyHandler
 server = return "pong"
     :<|> getMonads
     :<|> createMonad
     :<|> getMonadByID
     :<|> deleteMonad
 
-getMonads :: Handler [Monad.Monad]
+getMonads :: MyHandler [Monad.Monad]
 getMonads = liftIO Monad.fetchAll
 
-createMonad :: MonadCreateRequest -> Handler Monad.Monad
+createMonad :: MonadCreateRequest -> MyHandler Monad.Monad
 createMonad (MonadCreateRequest name desc rating) = liftIO $ Monad.create name desc rating
 
-getMonadByID :: Integer -> Handler Monad.Monad
+getMonadByID :: Integer -> MyHandler Monad.Monad
 getMonadByID monadID = do
   maybeMonad <- liftIO $ Monad.fetchByID monadID
   case maybeMonad of
     Just monad -> return monad
     Nothing -> throwError err404 { errBody = "That monad doesn't exist!" }
 
-deleteMonad :: Integer -> Handler Monad.Monad
+deleteMonad :: Integer -> MyHandler Monad.Monad
 deleteMonad monadID = do
   maybeMonad <- liftIO $ Monad.delete monadID
   case maybeMonad of
@@ -60,13 +65,17 @@ data MonadCreateRequest = MonadCreateRequest
 instance FromJSON MonadCreateRequest
 instance ToJSON MonadCreateRequest
 
-app :: Application
-app = serve api server
+myHandlerToHandler :: Config.Config -> MyHandler a -> Handler a
+myHandlerToHandler config myHandler = runReaderT myHandler config
+
+app :: Config.Config -> Application
+app config = serve api (hoistServer api (myHandlerToHandler config) server)
 
 startApp :: IO ()
 startApp = do
+  config <- Config.read
   putStrLn "Starting server"
-  run 8090 app
+  run (naturalToInt $ Config.serverPort config) (app config)
 
 api :: Proxy API
 api = Proxy
