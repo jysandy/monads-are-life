@@ -9,12 +9,13 @@ where
 
 import           Control.Exception
 import qualified Database.PostgreSQL.Simple    as PSQL
+import qualified Data.ByteString.Char8 as C
 
-connect :: IO PSQL.Connection
-connect = PSQL.connectPostgreSQL "dbname='monads_are_life'"
+connect :: String -> IO PSQL.Connection
+connect dbName = PSQL.connectPostgreSQL $ C.pack $ "dbname='" ++ dbName ++ "'"
 
-withConn :: (PSQL.Connection -> IO a) -> IO a
-withConn = bracket connect PSQL.close
+withConn :: String -> (PSQL.Connection -> IO a) -> IO a
+withConn dbName = bracket (connect dbName) PSQL.close
 
-withTransaction :: (PSQL.Connection -> IO a) -> IO a
-withTransaction f = withConn $ (\conn -> PSQL.withTransaction conn (f conn))
+withTransaction :: String -> (PSQL.Connection -> IO a) -> IO a
+withTransaction dbName f = withConn dbName $ (\conn -> PSQL.withTransaction conn (f conn))

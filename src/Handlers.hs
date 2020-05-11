@@ -1,5 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 module Handlers
   ( getMonads
@@ -14,7 +15,9 @@ where
 
 import           Control.Monad.Trans
 import           GHC.Generics
-import qualified Config
+import           Config                         ( getConfig
+                                                , Config(..)
+                                                )
 import           Data.Aeson
 import           Servant                 hiding ( Handler )
 import qualified Servant                        ( Handler )
@@ -23,25 +26,30 @@ import           Control.Monad.Except
 import           Control.Monad.Reader
 import           Data.Text
 
-type Handler = ReaderT Config.Config Servant.Handler
+type Handler = ReaderT Config Servant.Handler
 
 getMonads :: Handler [Monad.Monad]
-getMonads = liftIO Monad.fetchAll
+getMonads = do
+  Config { dbName } <- getConfig
+  liftIO $ Monad.fetchAll dbName
 
 createMonad :: MonadCreateRequest -> Handler Monad.Monad
-createMonad (MonadCreateRequest name desc rating) =
-  liftIO $ Monad.create name desc rating
+createMonad (MonadCreateRequest name desc rating) = do
+  Config { dbName } <- getConfig
+  liftIO $ Monad.create dbName name desc rating
 
 getMonadByID :: Integer -> Handler Monad.Monad
 getMonadByID monadID = do
-  maybeMonad <- liftIO $ Monad.fetchByID monadID
+  Config { dbName } <- getConfig
+  maybeMonad        <- liftIO $ Monad.fetchByID dbName monadID
   case maybeMonad of
     Just monad -> return monad
     Nothing    -> throwError err404 { errBody = "That monad doesn't exist!" }
 
 deleteMonad :: Integer -> Handler Monad.Monad
 deleteMonad monadID = do
-  maybeMonad <- liftIO $ Monad.delete monadID
+  Config { dbName } <- getConfig
+  maybeMonad        <- liftIO $ Monad.delete dbName monadID
   case maybeMonad of
     Just monad -> return monad
     Nothing    -> throwError err404 { errBody = "That monad doesn't exist!" }
@@ -55,5 +63,5 @@ data MonadCreateRequest = MonadCreateRequest
 instance FromJSON MonadCreateRequest
 instance ToJSON MonadCreateRequest
 
-toServantHandler :: Config.Config -> Handler a -> Servant.Handler a
+toServantHandler :: Config -> Handler a -> Servant.Handler a
 toServantHandler config handler = runReaderT handler config
