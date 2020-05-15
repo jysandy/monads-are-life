@@ -14,6 +14,6 @@ app =
     # makeStateless component \_ ->
         R.div_
           [ R.h1_ [ R.text "MONADS" ]
-          , monadDisplay { monad: { name: "Maybe", description: "Monad to work with nullables", rating: 4 } }
-          , monadDisplay { monad: { name: "State", description: "Monad to emulate mutable state", rating: 3 } }
+          , monadDisplay { name: "Maybe", description: "Monad to work with nullables", rating: 4 } 
+          , monadDisplay { name: "State", description: "Monad to emulate mutable state", rating: 3 } 
           ]
