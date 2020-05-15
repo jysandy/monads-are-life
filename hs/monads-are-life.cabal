@@ -22,6 +22,8 @@ library
                      , mtl
                      , dhall
                      , bytestring
+                     , wai-cors
+                     , http-types
   default-language:    Haskell2010
 
 executable monads-are-life-exe
