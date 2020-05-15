@@ -2,15 +2,11 @@ name:                monads-are-life
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/monads-are-life#readme
+homepage:            https://github.com/jysandy/monads-are-life
 license:             BSD3
-license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2020 Author name here
+license-file:        ../LICENSE
 category:            Web
 build-type:          Simple
-extra-source-files:  README.md
 cabal-version:       >=1.10
 
 library
