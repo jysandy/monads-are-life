@@ -7,18 +7,12 @@
     "start": "webpack-dev-server -wd --port 3000",
     "start-public": "webpack-dev-server -wd --port 3000 --host 0.0.0.0",
     "build": "webpack -p",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "build:purs": "pulp build",
-    "pscid:build": "pulp build",
-    "pscid:test": "pulp test",
-    "test": "pulp test",
-    "clean": "rm -rf output build",
-    "clean:everything": "npm run clean && rm -rf node_modules bower_components"
+    "clean": "rm -rf output build"
   },
   "dependencies": {
     "react": "16.6.1",
-    "react-dom": "16.6.1"
+    "react-dom": "16.6.1",
+    "xhr2": "^0.2.0"
   },
   "devDependencies": {
     "bower": "^1.8.8",

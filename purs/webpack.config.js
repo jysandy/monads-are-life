@@ -107,9 +107,9 @@ module.exports = (_env, options) => ({
             use: {
               loader: "purs-loader",
               options: {
-                bundleOutput: "output/bundle.js",
+                bundleOutput: outputPath + "/bundle.js",
                 // purs bundling breaks webpack's chunk splitting
-                bundle: false, // isProd(options),
+                bundle: isProd(options),
                 warnings: true,
                 spago: true,
                 watch: options.watch,
