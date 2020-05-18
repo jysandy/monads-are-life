@@ -111,17 +111,8 @@ module.exports = (_env, options) => ({
                 // purs bundling breaks webpack's chunk splitting
                 bundle: false, // isProd(options),
                 warnings: true,
+                spago: true,
                 watch: options.watch,
-                pscArgs: {
-                  // Set this to true and rebuild with
-                  // `rm -rf output && npx pulp build -- --sourcemaps`
-                  // to debug with sourcemaps.
-                  // Disabled by default because it slow down
-                  // and frequently breaks webpack/purs-loader,
-                  // and the "locals" in the browser debugger don't
-                  // make sense anyway.
-                  sourceMaps: false
-                }
               }
             }
           }
