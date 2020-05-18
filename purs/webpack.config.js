@@ -66,9 +66,7 @@ module.exports = (_env, options) => ({
   },
   plugins: [
     new CleanWebpackPlugin(["build"]),
-    new MiniCssExtractPlugin({
-      filename: "styles.css"
-    }),
+    new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: "src/index.html"
     }),
@@ -96,27 +94,22 @@ module.exports = (_env, options) => ({
         exclude: /node_modules|bower_components/
       },
       {
-        oneOf: [
-          {
-            test: /\.(css)$/,
-            use: [ MiniCssExtractPlugin.loader, "css-loader" ]
-          },
-          {
-            test: /\.purs$/,
-            exclude: /node_modules/,
-            use: {
-              loader: "purs-loader",
-              options: {
-                bundleOutput: outputPath + "/bundle.js",
-                // purs bundling breaks webpack's chunk splitting
-                bundle: isProd(options),
-                warnings: true,
-                spago: true,
-                watch: options.watch,
-              }
-            }
+        test: /\.purs$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "purs-loader",
+          options: {
+            bundleOutput: outputPath + "/bundle.js",
+            bundle: isProd(options),
+            warnings: true,
+            spago: true,
+            watch: options.watch,
           }
-        ]
+        }
+      },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       }
     ]
   }

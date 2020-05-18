@@ -18,8 +18,20 @@ monadDisplay :: forall r. (MonadFields r) -> JSX
 monadDisplay =
   makeStateless component
     $ \props ->
-        R.div_
-          [ R.p_ [ R.text $ "Name: " <> props.name ]
-          , R.p_ [ R.text $ "Description: " <> props.description ]
-          , R.p_ [ R.text $ "Rating: " <> show props.rating ]
-          ]
+        R.div
+          { className: "pure-g"
+          , children:
+              [ R.div
+                  { className: "pure-u-1-3"
+                  , children: [ R.p_ [ R.text $ "Name: " <> props.name ] ]
+                  }
+              , R.div
+                  { className: "pure-u-1-3"
+                  , children: [ R.p_ [ R.text $ "Description: " <> props.description ] ]
+                  }
+              , R.div
+                  { className: "pure-u-1-3"
+                  , children: [ R.p_ [ R.text $ "Rating: " <> show props.rating ] ]
+                  }
+              ]
+          }
