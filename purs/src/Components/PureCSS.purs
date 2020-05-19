@@ -14,14 +14,19 @@ pageContainer :: Array JSX -> JSX
 pageContainer =
   makeStateless (createComponent "PageContainer")
     $ \children ->
-        row
-          [ column 1 5 []
-          , column 3 5 children
-          , column 1 5 []
-          ]
+        R.div
+          { className: "pure-g container"
+          , children:
+              [ column 1 5 []
+              , column 3 5 children
+              , column 1 5 []
+              ]
+          }
 
-unitClassName :: Int -> Int -> String
-unitClassName numerator denominator = "pure-u-" <> show numerator <> "-" <> show denominator
+columnClassName :: Int -> Int -> String
+columnClassName numerator denominator =
+  "pure-u-" <> show numerator <> "-" <> show denominator
+    <> " column centred-container"
 
 -- column 1 3 => a column that takes up 1/3 of the width.
 column :: Int -> Int -> Array JSX -> JSX
@@ -29,7 +34,7 @@ column numerator denominator =
   makeStateless (createComponent $ "Column-" <> show numerator <> "-" <> show denominator)
     $ \children ->
         R.div
-          { className: unitClassName numerator denominator
+          { className: columnClassName numerator denominator
           , children: children
           }
 
