@@ -1,8 +1,13 @@
 @import '~purecss/build/pure-min.css';
+@import '~@fortawesome/fontawesome-free/css/all.css';
 
 .column {
   display: flex;
   flex-flow: column nowrap;
+}
+
+body {
+  background: ivory;
 }
 
 .centred-container {
@@ -12,4 +17,8 @@
 
 .centred-container > h1, h2, h3, h4, h5, h6, p {
   text-align: center;
+}
+
+.star {
+  color: gold;
 }

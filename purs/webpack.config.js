@@ -99,7 +99,7 @@ module.exports = (_env, options) => ({
         use: {
           loader: "purs-loader",
           options: {
-            bundleOutput: outputPath + "/bundle.js",
+            bundleOutput: "bundle.js",
             bundle: isProd(options),
             warnings: true,
             spago: true,
@@ -110,6 +110,19 @@ module.exports = (_env, options) => ({
       {
         test: /\.css$/i,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'fonts',
+              name: '[name].[ext]',
+              esModule: false
+            }
+          }
+        ]
       }
     ]
   }

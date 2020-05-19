@@ -1,9 +1,10 @@
-module Components.PureCSS (row, column, pageContainer, table) where
+module Components.PureCSS (row, column, pageContainer, table, text) where
 
 -- Wrappers over PureCSS's classes.
 import Prelude
 import React.Basic (JSX, createComponent, makeStateless)
 import React.Basic.DOM as R
+import Data.Array (singleton)
 
 row :: Array JSX -> JSX
 row =
@@ -15,7 +16,7 @@ pageContainer =
   makeStateless (createComponent "PageContainer")
     $ \children ->
         R.div
-          { className: "pure-g container"
+          { className: "pure-g"
           , children:
               [ column 1 5 []
               , column 3 5 children
@@ -38,19 +39,19 @@ column numerator denominator =
           , children: children
           }
 
-text :: String -> Array JSX
-text s = [ R.text s ]
+text :: forall s. Show s => s -> Array JSX
+text s = [ R.text (show s) ]
 
-table :: forall r. { header :: Array String, rows :: Array (Array String) | r } -> JSX
+table :: forall r. { header :: Array JSX, rows :: Array (Array JSX) | r } -> JSX
 table =
   makeStateless (createComponent "Table")
     $ \{ header, rows } ->
         R.table
           { className: "pure-table pure-table-horizontal"
           , children:
-              [ R.thead_ [ R.tr_ $ map (R.th_ <<< text) header ]
+              [ R.thead_ [ R.tr_ $ map (R.th_ <<< singleton) header ]
               , R.tbody_ (map makeTR rows)
               ]
           }
   where
-  makeTR row' = R.tr_ $ map (R.td_ <<< text) row'
+  makeTR row' = R.tr_ $ map (R.td_ <<< singleton) row'

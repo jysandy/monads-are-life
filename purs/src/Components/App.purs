@@ -9,7 +9,8 @@ import Effect.Console (log)
 import Effect.Class (liftEffect)
 import API as API
 import Components.PureCSS as P
-import Data.Traversable(sequence)
+import Components.Rating (ratingStars)
+import Data.Traversable (sequence)
 
 component :: Component Unit
 component = createComponent "App"
@@ -31,7 +32,7 @@ app = unit # make component { initialState, didMount, render }
     P.pageContainer
       [ R.h1_ [ R.text "M O N A D S" ]
       , P.table
-          { header: [ "Name", "Description", "Rating" ]
-          , rows: (map (sequence [ _.name, _.description, show <<< _.rating ]) self.state)
+          { header: map R.text [ "Name", "Description", "Rating" ]
+          , rows: (map (sequence [ R.text <<< _.name, R.text <<< _.description, ratingStars <<< _.rating ]) self.state)
           }
       ]

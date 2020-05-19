@@ -1,8 +1,8 @@
 {
-  "name": "react-basic-starter",
+  "name": "monads-are-life",
   "version": "1.0.0",
-  "description": "An example react-basic project",
-  "repository": "lumihq/react-basic-starter",
+  "description": "M O N A D S",
+  "repository": "jysandy/monads-are-life",
   "scripts": {
     "start": "webpack-dev-server -wd --port 3000",
     "start-public": "webpack-dev-server -wd --port 3000 --host 0.0.0.0",
@@ -10,6 +10,7 @@
     "clean": "rm -rf output build"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "purecss": "^2.0.3",
     "react": "16.6.1",
     "react-dom": "16.6.1",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "1.0.1",
+    "file-loader": "^6.0.0",
     "gh-pages": "2.0.1",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "0.4.4",
