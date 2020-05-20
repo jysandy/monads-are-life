@@ -18,6 +18,10 @@ table {
   flex-flow: column nowrap;
 }
 
+.column > * {
+  margin-bottom: 8px;
+}
+
 .column-center {
   align-items: center;
 }

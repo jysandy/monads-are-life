@@ -1,4 +1,14 @@
-module Components.PureCSS (row, column, pageContainer, table, text, HorizontalAlignment(..), Fraction(..)) where
+module Components.PureCSS
+  ( row
+  , column
+  , pageContainer
+  , table
+  , text
+  , HorizontalAlignment(..)
+  , Fraction(..)
+  , button
+  , icon
+  ) where
 
 -- Wrappers over PureCSS's classes.
 import Prelude
@@ -89,3 +99,15 @@ table =
           }
   where
   makeTR row' = R.tr_ $ map (R.td_ <<< singleton) row'
+
+button :: { children :: Array JSX } -> JSX
+button =
+  makeStateless (createComponent "Button")
+    $ \{ children } ->
+        R.button
+          { className: "pure-button pure-button-primary"
+          , children: children
+          }
+
+icon :: String -> JSX
+icon name = R.span {className: "fas fa-" <> name}

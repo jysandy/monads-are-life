@@ -39,7 +39,7 @@ app = unit # make component { initialState, didMount, render }
                   { header: map R.text [ "Name", "Description", "Rating" ]
                   , rows: (map monadToArray self.state)
                   }
-              , R.p_ [ R.text "+" ]
+              , P.button {children: [P.icon "plus"]} 
               ]
           }
       ]
