@@ -31,8 +31,17 @@ app = unit # make component { initialState, didMount, render }
   render self =
     P.pageContainer
       [ R.h1_ [ R.text "M O N A D S" ]
-      , P.table
-          { header: map R.text [ "Name", "Description", "Rating" ]
-          , rows: (map (sequence [ R.text <<< _.name, R.text <<< _.description, ratingStars <<< _.rating ]) self.state)
+      , P.column
+          { childAlign: P.Left
+          , width: P.Fraction 1 2
+          , children:
+              [ P.table
+                  { header: map R.text [ "Name", "Description", "Rating" ]
+                  , rows: (map monadToArray self.state)
+                  }
+              , R.p_ [ R.text "+" ]
+              ]
           }
       ]
+    where
+    monadToArray = (sequence [ R.text <<< _.name, R.text <<< _.description, ratingStars <<< _.rating ])

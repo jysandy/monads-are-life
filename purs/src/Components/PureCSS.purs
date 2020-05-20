@@ -1,4 +1,4 @@
-module Components.PureCSS (row, column, pageContainer, table, text) where
+module Components.PureCSS (row, column, pageContainer, table, text, HorizontalAlignment(..), Fraction(..)) where
 
 -- Wrappers over PureCSS's classes.
 import Prelude
@@ -9,33 +9,67 @@ import Data.Array (singleton)
 row :: Array JSX -> JSX
 row =
   makeStateless (createComponent "Row")
-    $ \children -> R.div { className: "pure-g", children: children }
+    $ \children -> R.div { className: "pure-g row", children: children }
 
 pageContainer :: Array JSX -> JSX
 pageContainer =
   makeStateless (createComponent "PageContainer")
     $ \children ->
         R.div
-          { className: "pure-g"
+          { className: "pure-g row"
           , children:
-              [ column 1 5 []
-              , column 3 5 children
-              , column 1 5 []
+              [ column
+                  { width: Fraction 1 5
+                  , childAlign: Center
+                  , children: []
+                  }
+              , column
+                  { width: Fraction 3 5
+                  , childAlign: Center
+                  , children: children
+                  }
+              , column
+                  { width: Fraction 1 5
+                  , childAlign: Center
+                  , children: []
+                  }
               ]
           }
 
-columnClassName :: Int -> Int -> String
-columnClassName numerator denominator =
-  "pure-u-" <> show numerator <> "-" <> show denominator
-    <> " column centred-container"
+data HorizontalAlignment
+  = Left
+  | Right
+  | Center
 
--- column 1 3 => a column that takes up 1/3 of the width.
-column :: Int -> Int -> Array JSX -> JSX
-column numerator denominator =
-  makeStateless (createComponent $ "Column-" <> show numerator <> "-" <> show denominator)
-    $ \children ->
+-- Fraction 1 3 => 1/3
+data Fraction
+  = Fraction Int Int
+
+type ColumnProps
+  = { childAlign :: HorizontalAlignment
+    -- A column with width 1/3 => a column that takes up 1/3 of the width
+    , width :: Fraction
+    , children :: Array JSX
+    }
+
+columnClassName :: Fraction -> HorizontalAlignment -> String
+columnClassName (Fraction numerator denominator) alignment =
+  "pure-u-" <> show numerator <> "-" <> show denominator
+    <> " column "
+    <> alignClass alignment
+  where
+  alignClass Left = "column-left"
+
+  alignClass Right = "column-right"
+
+  alignClass Center = "column-center"
+
+column :: ColumnProps -> JSX
+column =
+  makeStateless (createComponent "Column")
+    $ \{ childAlign, width, children } ->
         R.div
-          { className: columnClassName numerator denominator
+          { className: columnClassName width childAlign
           , children: children
           }
 
