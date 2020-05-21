@@ -10,6 +10,7 @@ import Effect.Class (liftEffect)
 import API as API
 import Components.PureCSS as P
 import Components.Rating (ratingStars)
+import Components.CreateMonadForm (createMonadForm)
 import Data.Traversable (sequence)
 
 component :: Component Unit
@@ -39,7 +40,7 @@ app = unit # make component { initialState, didMount, render }
                   { header: map R.text [ "Name", "Description", "Rating" ]
                   , rows: (map monadToArray self.state)
                   }
-              , P.button {children: [P.icon "plus"]} 
+              , createMonadForm
               ]
           }
       ]

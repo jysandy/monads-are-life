@@ -14,6 +14,7 @@ module Components.PureCSS
 import Prelude
 import React.Basic (JSX, createComponent, makeStateless)
 import React.Basic.DOM as R
+import React.Basic.Events (EventHandler)
 import Data.Array (singleton)
 
 row :: Array JSX -> JSX
@@ -100,13 +101,14 @@ table =
   where
   makeTR row' = R.tr_ $ map (R.td_ <<< singleton) row'
 
-button :: { children :: Array JSX } -> JSX
+button :: { children :: Array JSX, onClick :: EventHandler } -> JSX
 button =
   makeStateless (createComponent "Button")
-    $ \{ children } ->
+    $ \{ children, onClick } ->
         R.button
           { className: "pure-button pure-button-primary"
           , children: children
+          , onClick: onClick
           }
 
 icon :: String -> JSX
