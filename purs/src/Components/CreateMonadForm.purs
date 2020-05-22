@@ -9,12 +9,16 @@ import React.Basic.DOM as R
 import React.Basic.DOM.Events (capture_, capture, targetValue)
 import Effect.Console (log)
 import Effect.Class (liftEffect)
+import Effect (Effect)
 import API as API
 import Components.PureCSS as P
 import Data.Maybe (fromMaybe)
 
-createMonadForm :: JSX
-createMonadForm = unit # make (createComponent "CreateMonadForm") { initialState, render }
+type Props
+  = { onSuccess :: API.Monad -> Effect Unit }
+
+createMonadForm :: Props -> JSX
+createMonadForm = make (createComponent "CreateMonadForm") { initialState, render }
   where
   initialState = { open: false, name: "", description: "", rating: 3 }
 
@@ -92,7 +96,7 @@ createMonadForm = unit # make (createComponent "CreateMonadForm") { initialState
                 }
             case result of
               Left error -> liftEffect $ log error
-              Right monad -> pure unit
+              Right monad -> liftEffect $ self.props.onSuccess monad
 
     updateName targetValue = self.setState $ \s -> s { name = fromMaybe "" targetValue }
 

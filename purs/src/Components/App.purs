@@ -40,7 +40,7 @@ app = unit # make component { initialState, didMount, render }
                   { header: map R.text [ "Name", "Description", "Rating" ]
                   , rows: (map monadToArray self.state)
                   }
-              , createMonadForm
+              , createMonadForm {onSuccess: \monad -> self.setState (\s -> append s [monad])}
               ]
           }
       ]
