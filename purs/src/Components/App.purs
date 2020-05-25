@@ -13,14 +13,14 @@ import Components.Rating (ratingStars)
 import Components.CreateMonadForm (mkCreateMonadForm)
 import Data.Traversable (sequence)
 import React.Basic.Hooks as React
-import React.Basic.Hooks (Component, component, useEffect, useState, (/\))
+import React.Basic.Hooks (Component, component, useEffectOnce, useState, (/\))
 
 mkApp :: Component Unit
 mkApp = do
   createMonadForm <- mkCreateMonadForm
   component "MonadsApp" \_ -> React.do
     state /\ setState <- useState []
-    useEffect state do
+    useEffectOnce do
       _ <-
         launchAff do
           result <- API.getMonads
