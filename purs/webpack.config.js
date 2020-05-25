@@ -99,7 +99,7 @@ module.exports = (_env, options) => ({
         use: {
           loader: "purs-loader",
           options: {
-            bundleOutput: "bundle.js",
+            bundleOutput: "output/bundle.js",
             bundle: isProd(options),
             warnings: true,
             spago: true,
