@@ -1,8 +1,8 @@
 module API where
 
 import Prelude
-import Data.Maybe
-import Data.Either (Either(..))
+import Data.Maybe (Maybe(..))
+import Data.Either (Either)
 import Effect.Aff (Aff)
 import Affjax as AX
 import Affjax.ResponseFormat as ResponseFormat

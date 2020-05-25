@@ -12,40 +12,36 @@ module Components.PureCSS
 
 -- Wrappers over PureCSS's classes.
 import Prelude
-import React.Basic (JSX, createComponent, makeStateless)
+import React.Basic (JSX)
 import React.Basic.DOM as R
 import React.Basic.Events (EventHandler)
 import Data.Array (singleton)
 
 row :: Array JSX -> JSX
-row =
-  makeStateless (createComponent "Row")
-    $ \children -> R.div { className: "pure-g row", children: children }
+row children = R.div { className: "pure-g row", children: children }
 
 pageContainer :: Array JSX -> JSX
-pageContainer =
-  makeStateless (createComponent "PageContainer")
-    $ \children ->
-        R.div
-          { className: "pure-g row"
-          , children:
-              [ column
-                  { width: Fraction 1 5
-                  , childAlign: Center
-                  , children: []
-                  }
-              , column
-                  { width: Fraction 3 5
-                  , childAlign: Center
-                  , children: children
-                  }
-              , column
-                  { width: Fraction 1 5
-                  , childAlign: Center
-                  , children: []
-                  }
-              ]
-          }
+pageContainer children =
+  R.div
+    { className: "pure-g row"
+    , children:
+        [ column
+            { width: Fraction 1 5
+            , childAlign: Center
+            , children: []
+            }
+        , column
+            { width: Fraction 3 5
+            , childAlign: Center
+            , children: children
+            }
+        , column
+            { width: Fraction 1 5
+            , childAlign: Center
+            , children: []
+            }
+        ]
+    }
 
 data HorizontalAlignment
   = Left
@@ -76,40 +72,34 @@ columnClassName (Fraction numerator denominator) alignment =
   alignClass Center = "column-center"
 
 column :: ColumnProps -> JSX
-column =
-  makeStateless (createComponent "Column")
-    $ \{ childAlign, width, children } ->
-        R.div
-          { className: columnClassName width childAlign
-          , children: children
-          }
+column { childAlign, width, children } =
+  R.div
+    { className: columnClassName width childAlign
+    , children: children
+    }
 
 text :: forall s. Show s => s -> Array JSX
 text s = [ R.text (show s) ]
 
 table :: forall r. { header :: Array JSX, rows :: Array (Array JSX) | r } -> JSX
-table =
-  makeStateless (createComponent "Table")
-    $ \{ header, rows } ->
-        R.table
-          { className: "pure-table pure-table-horizontal"
-          , children:
-              [ R.thead_ [ R.tr_ $ map (R.th_ <<< singleton) header ]
-              , R.tbody_ (map makeTR rows)
-              ]
-          }
+table { header, rows } =
+  R.table
+    { className: "pure-table pure-table-horizontal"
+    , children:
+        [ R.thead_ [ R.tr_ $ map (R.th_ <<< singleton) header ]
+        , R.tbody_ (map makeTR rows)
+        ]
+    }
   where
   makeTR row' = R.tr_ $ map (R.td_ <<< singleton) row'
 
 button :: { children :: Array JSX, onClick :: EventHandler } -> JSX
-button =
-  makeStateless (createComponent "Button")
-    $ \{ children, onClick } ->
-        R.button
-          { className: "pure-button pure-button-primary"
-          , children: children
-          , onClick: onClick
-          }
+button { children, onClick } =
+  R.button
+    { className: "pure-button pure-button-primary"
+    , children: children
+    , onClick: onClick
+    }
 
 icon :: String -> JSX
-icon name = R.span {className: "fas fa-" <> name}
+icon name = R.span { className: "fas fa-" <> name }

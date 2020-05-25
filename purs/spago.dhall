@@ -11,6 +11,7 @@ You can edit this file as you like.
   , "generics-rep"
   , "psci-support"
   , "react-basic"
+  , "react-basic-hooks"
   , "transformers"
   ]
 , packages = ./packages.dhall
