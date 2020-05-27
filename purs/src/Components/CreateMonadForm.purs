@@ -61,7 +61,7 @@ mkCreateMonadForm = component "CreateMonadForm" render
                     [ P.column
                         { childAlign: P.Left
                         , width:
-                            P.Fraction 1 4
+                            P.Fraction 3 24
                         , children:
                             [ P.button
                                 { children: [ R.text "Create" ]
@@ -72,7 +72,7 @@ mkCreateMonadForm = component "CreateMonadForm" render
                     , P.column
                         { childAlign: P.Left
                         , width:
-                            P.Fraction 1 4
+                            P.Fraction 3 24
                         , children:
                             [ P.button
                                 { children: [ R.text "Cancel" ]
