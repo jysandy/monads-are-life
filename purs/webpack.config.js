@@ -18,6 +18,11 @@ module.exports = (_env, options) => ({
   entry: {
     main: "./src/index.js",
   },
+  resolve: {
+    alias: {
+      'node_modules': path.join(__dirname, 'node_modules')
+    }
+  },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, outputPath),
@@ -118,6 +123,19 @@ module.exports = (_env, options) => ({
             loader: 'file-loader',
             options: {
               outputPath: 'fonts',
+              name: '[name].[ext]',
+              esModule: false
+            }
+          }
+        ]
+      },
+      {
+        test: /\.jpg?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'images',
               name: '[name].[ext]',
               esModule: false
             }

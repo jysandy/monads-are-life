@@ -11,6 +11,7 @@ import API as API
 import Components.PureCSS as P
 import Components.Rating (ratingStars)
 import Components.CreateMonadForm (mkCreateMonadForm)
+import Components.Graph (mkGraph)
 import Data.Traversable (sequence)
 import React.Basic.Hooks as React
 import React.Basic.Hooks (Component, component, useEffectOnce, useState, (/\))
@@ -29,6 +30,7 @@ makeAPICall aff onSuccess =
 mkApp :: Component Unit
 mkApp = do
   createMonadForm <- mkCreateMonadForm
+  graph <- mkGraph
   component "MonadsApp" \_ -> React.do
     state /\ setState <- useState []
     let
@@ -51,7 +53,7 @@ mkApp = do
           [ R.h1_ [ R.text "M O N A D S" ]
           , P.column
               { childAlign: P.Left
-              , width: P.Fraction 1 2
+              , width: P.Fraction 4 5
               , children:
                   [ P.table
                       { header: map R.text [ "Name", "Description", "Rating", "" ]
@@ -67,6 +69,23 @@ mkApp = do
                             state
                       }
                   , createMonadForm { onSuccess: addMonad }
+                  , P.row
+                      [ P.column
+                          { childAlign: P.Left
+                          , width: P.Fraction 1 2
+                          , children: [ graph unit ]
+                          }
+                      , P.column
+                          { childAlign: P.Left
+                          , width: P.Fraction 1 2
+                          , children:
+                              [ R.img
+                                  { src: "/images/stonks.jpg"
+                                  , className: "image"
+                                  }
+                              ]
+                          }
+                      ]
                   ]
               }
           ]
