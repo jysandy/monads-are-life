@@ -5,15 +5,20 @@ module Config
   ( Config(..)
   , read
   , getConfig
-  )
-where
+  ) where
 
-import           Prelude                 hiding ( read )
+import           Control.Monad.Reader
 import           Dhall
 import           GHC.Generics
-import           Control.Monad.Reader
+import           Prelude              hiding (read)
 
-data Config = Config {serverPort :: Natural, dbName :: String} deriving (Generic, Show)
+data Config =
+  Config
+    { serverPort :: Natural
+    , dbName     :: String
+    }
+  deriving (Generic, Show)
+
 instance FromDhall Config
 
 read :: IO Config
