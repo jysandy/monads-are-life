@@ -2,20 +2,16 @@ name:                monads-are-life
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/monads-are-life#readme
+homepage:            https://github.com/jysandy/monads-are-life
 license:             BSD3
-license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2020 Author name here
+license-file:        ../LICENSE
 category:            Web
 build-type:          Simple
-extra-source-files:  README.md
 cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib
+  exposed-modules:     Monad, DB, Config, Server, Handlers
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , servant-server
@@ -23,6 +19,11 @@ library
                      , warp
                      , postgresql-simple
                      , text
+                     , mtl
+                     , dhall
+                     , bytestring
+                     , wai-cors
+                     , http-types
   default-language:    Haskell2010
 
 executable monads-are-life-exe
@@ -36,16 +37,18 @@ executable monads-are-life-exe
 test-suite monads-are-life-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   main-is:             Spec.hs
+  other-modules:       MonadTest
   build-depends:       base
                      , monads-are-life
-                     , hspec
-                     , hspec-wai
-                     , hspec-wai-json
+                     , tasty
+                     , tasty-hunit
                      , aeson
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+                     , postgresql-simple
+                     , containers
   default-language:    Haskell2010
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/monads-are-life
+  location: https://github.com/jysandy/monads-are-life
